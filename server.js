@@ -8,6 +8,10 @@ var request    = require("request");
 
 // Initialize Express
 var app = express();
+
+// Handlebars
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 app.use(express.static("public"));
 
 // Database configuration
@@ -17,9 +21,6 @@ var collections = ["articles"];
 // Use mongojs to hook the database to the db variable
 var db = mongojs(databaseUrl, collections);
 
-// Handlebars
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
-app.set('view engine', 'handlebars');
 
 // This makes sure that any errors are logged if mongodb runs into an issue
 db.on("error", function(error) {
@@ -28,12 +29,22 @@ db.on("error", function(error) {
 
 // Routes
 app.get("/", function(req, res) {
-  res.send(index.html);
+  // Find all results from the articles collection in the db
+  db.articles.find({}, function(error, found) {
+    // Throw any errors to the console
+    if (error) {
+      console.log(error);
+    }
+    // If there are no errors, send the data to the browser as json
+    else {
+      res.render('index', { articles: found } );
+    }
+  });
 });
 
 // Retrieve data from the db
 app.get("/all", function(req, res) {
-  // Find all results from the scrapedData collection in the db
+  // Find all results from the articles collection in the db
   db.articles.find({}, function(error, found) {
     // Throw any errors to the console
     if (error) {

@@ -5,12 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Mongo Scraper</title>
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <script src="js/scripts.js"></script>
+  <link href="/css/materialize.min.css" rel="stylesheet">
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>   
+  <script src="/js/materialize.min.js"></script>
+  <script src="/js/scripts.js"></script>
 </head>
 <body>
+  <nav class="site-navbar blue darken-4">
+    <div class="container">
+      <div class="nav-wrapper">
+        <a href="#!" class="brand-logo">Mongo Scraper</a>
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Saved Articles</a></li>
+          <li><a href="/scrape" id="btn-scrape"class="btn waves-effect waves-light orange" >Scrape</a></li>
+        </ul>
+        <ul class="side-nav" id="mobile-demo">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Saved Articles</a></li>
+          <li><a href="/scrape" id="btn-scrape"class="btn waves-effect waves-light orange" >Scrape</a></li>
+        </ul>
+      </div><!--/.nav-wrapper -->
+    </div><!-- /.container -->
+  </nav><!--/.site-navbar -->
 
-  {{{ body }}}
-
+  <div class="container">
+    {{{ body }}}
+  </div><!--/.container -->
 </body>
 </html>
