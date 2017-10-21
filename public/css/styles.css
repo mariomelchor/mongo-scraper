@@ -1,3 +1,16 @@
 body {
   background-color: #fcfcfc;
 }
+#toast-container {
+  top: 10% !important;
+  right: auto !important;
+  left: 50%;  
+  margin-left: -160px;
+}
+.articles-container {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.text-center {
+  text-align: center;
+}

@@ -26,10 +26,8 @@ mongoose.connect("mongodb://localhost/mongoscraper", {
 // Routes
 app.get("/", function(req, res) {
   db.Article
-  .find({})
+  .find({saved: false})
   .then(function(dbArticle) {
-    // If we were able to successfully find Articles, send them back to the client
-    // res.json(dbArticle);
     res.render('index', { articles: dbArticle } );
   })
   .catch(function(err) {
@@ -80,6 +78,42 @@ app.get("/scrape", function(req, res) {
 
     res.redirect("/");
     
+  });
+});
+
+// Route for saving an article
+app.put("/save/:id", function(req, res) {
+  db.Article
+  .findOneAndUpdate({ _id: req.params.id }, { saved: true })
+  .then(function(dbArticle) {
+    res.json(dbArticle);
+  })
+  .catch(function(err) {
+    res.json(err);
+  });
+});
+
+// Route for unsaving an article
+app.put("/unsave/:id", function(req, res) {
+  db.Article
+  .findOneAndUpdate({ _id: req.params.id }, { saved: false })
+  .then(function(dbArticle) {
+    res.json(dbArticle);
+  })
+  .catch(function(err) {
+    res.json(err);
+  });
+});
+
+// Route for all saved articles
+app.get("/saved", function(req, res) {
+  db.Article
+  .find({ saved: true })
+  .then(function(dbArticle) {
+    res.render('saved', { articles: dbArticle } );
+  })
+  .catch(function(err) {
+    res.json(err);
   });
 });
 
