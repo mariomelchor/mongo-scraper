@@ -2,9 +2,11 @@ var bodyParser = require('body-parser')
 var cheerio    = require("cheerio");
 var exphbs     = require('express-handlebars');
 var express    = require("express");
-var mongojs    = require("mongojs");
 var mongoose   = require("mongoose");
 var request    = require("request");
+
+// Require all models
+var db = require("./models");
 
 // Initialize Express
 var app = express();
@@ -14,46 +16,39 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 app.use(express.static("public"));
 
-// Database configuration
-var databaseUrl = "mongoscraper";
-var collections = ["articles"];
-
-// Use mongojs to hook the database to the db variable
-var db = mongojs(databaseUrl, collections);
-
-
-// This makes sure that any errors are logged if mongodb runs into an issue
-db.on("error", function(error) {
-  console.log("Database Error:", error);
+// Set mongoose to leverage built in JavaScript ES6 Promises
+// Connect to the Mongo DB
+mongoose.Promise = Promise;
+mongoose.connect("mongodb://localhost/mongoscraper", {
+  useMongoClient: true
 });
 
 // Routes
 app.get("/", function(req, res) {
-  // Find all results from the articles collection in the db
-  db.articles.find({}, function(error, found) {
-    // Throw any errors to the console
-    if (error) {
-      console.log(error);
-    }
-    // If there are no errors, send the data to the browser as json
-    else {
-      res.render('index', { articles: found } );
-    }
+  db.Article
+  .find({})
+  .then(function(dbArticle) {
+    // If we were able to successfully find Articles, send them back to the client
+    // res.json(dbArticle);
+    res.render('index', { articles: dbArticle } );
+  })
+  .catch(function(err) {
+    // If an error occurred, send it to the client
+    res.json(err);
   });
 });
 
 // Retrieve data from the db
 app.get("/all", function(req, res) {
-  // Find all results from the articles collection in the db
-  db.articles.find({}, function(error, found) {
-    // Throw any errors to the console
-    if (error) {
-      console.log(error);
-    }
-    // If there are no errors, send the data to the browser as json
-    else {
-      res.json(found);
-    }
+  db.Article
+  .find({})
+  .then(function(dbArticle) {
+    // If we were able to successfully find Articles, send them back to the client
+    res.json(dbArticle);
+  })
+  .catch(function(err) {
+    // If an error occurred, send it to the client
+    res.json(err);
   });
 });
 
@@ -64,32 +59,28 @@ app.get("/scrape", function(req, res) {
     var $ = cheerio.load(html);
     // For each element with a "title" class
     $(".article-title").each(function(i, element) {
+      // Crete an empty object
+      var articleObj = {};
+
       // Save the title and href of each item in the current element
-      var title = $(element).attr("title");
-      var link = $(element).attr("href");
+      articleObj.title = $(element).attr("title");
+      articleObj.link = $(element).attr("href");
 
-      // If this found element had both a title and a link
-      if (title && link) {
-        // Insert the data in the articles collection
-        db.articles.insert({
-          title: title,
-          link: link
-        },
-        function(err, inserted) {
-          if (err) {
-            // Log the error if one is encountered during the query
-            console.log(err);
-          }
-          else {
-            // Otherwise, log the inserted data
-            console.log(inserted);
-          }
-        });
-      }
+      // Insert the data in the articles collection
+      db.Article
+      .create(articleObj)
+      .then(function(dbArticle) {
+      })
+      .catch(function(err) {
+        // If an error occurred, send it to the client
+        res.json(err);
+      });
+
     });
-  });
 
-  res.redirect("/");
+    res.redirect("/");
+    
+  });
 });
 
 // Set the app to listen on port 3000
