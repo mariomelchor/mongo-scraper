@@ -10,6 +10,15 @@ $(document).ready(function() {
   //   });
   // });
 
+  // initialize masonry
+  var $grid = $('.article-grid').masonry({
+    itemSelector: '.article-item',
+    columnWidth: '.article-sizer',
+    percentPosition: true,
+    initLayout: true,
+  });
+
+  $grid.masonry();
 
   // Save an article
   $(document).on("click", ".btn-save", function(e){
@@ -25,12 +34,13 @@ $(document).ready(function() {
     }).then(function(data) {
       if (data.saved) {
         Materialize.toast('Article added to Saved Articles', 3000);
-        $("[data-id='" + data._id + "']").fadeOut(1000); 
+        $("[data-id='" + data._id + "']").remove();
+        $grid.masonry();
       }
     });
   });
 
-  // Save an article
+  // UnSave an article
   $(document).on("click", ".btn-unsave", function(e){
     e.preventDefault();
 
@@ -44,7 +54,8 @@ $(document).ready(function() {
     }).then(function(data) {
       if (data.saved) {
         Materialize.toast('Article Removed from Saved Articles', 3000);
-        $("[data-id='" + data._id + "']").fadeOut(1000); 
+        $("[data-id='" + data._id + "']").remove(); 
+        $grid.masonry();
       }
     });
   });

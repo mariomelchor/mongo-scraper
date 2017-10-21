@@ -1,7 +1,8 @@
 <div id="articles" class="articles-container">
 {{#if articles}}
   
-    <div class="row">
+    <div class="article-grid row">
+      <div class="article-sizer col s12 m6 xl4"></div><!-- /.article-sizer -->
       {{#each articles}}
         <div class="article-item col s12 m6 xl4" data-id="{{this._id}}">
           <div class="card">
