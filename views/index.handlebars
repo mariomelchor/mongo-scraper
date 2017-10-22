@@ -1,22 +1,22 @@
 <div id="articles" class="articles-container">
 {{#if articles}}
 
-    <div class="article-grid row">
-      <div class="article-sizer col s12 m6 xl4"></div><!-- /.article-sizer -->
-      {{#each articles}}
-        <div class="article-item col s12 m6 xl4" data-id="{{this._id}}">
-          <div class="card">
-            <div class="card-content">
-              <span class="card-title"><a href="{{this.link}}" class="blue-text">{{this.title}}</a></span>
-              <a href="{{this.link}}" class="black-text" target="_blank"><i class="material-icons tiny">call_made</i> View Article</a>
-            </div><!--/.card-content -->
-            <div class="card-action">
-              <a href="#" class="orange-text btn-save"><i class="material-icons tiny">save</i> Save Article</a>
-            </div><!--/.card-action -->
-          </div><!--/.card -->
-        </div><!--/.article-item -->
-      {{/each}}
-    </div><!--/.row -->
+  <div class="article-grid row">
+    <div class="article-sizer col s12 m6 xl4"></div><!-- /.article-sizer -->
+    {{#each articles}}
+      <div class="article-item col s12 m6 xl4" data-id="{{this._id}}">
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title"><a href="{{this.link}}" class="blue-text">{{this.title}}</a></span>
+            <a href="{{this.link}}" class="black-text" target="_blank"><i class="material-icons tiny">call_made</i> View Article</a>
+          </div><!--/.card-content -->
+          <div class="card-action">
+            <a href="#" class="orange-text btn-save"><i class="material-icons tiny">save</i> Save Article</a>
+          </div><!--/.card-action -->
+        </div><!--/.card -->
+      </div><!--/.article-item -->
+    {{/each}}
+  </div><!--/.row -->
 
 {{else}}
 
