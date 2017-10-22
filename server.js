@@ -73,7 +73,7 @@ app.get("/scrape", function(req, res) {
       })
       .catch(function(err) {
         // If an error occurred, send it to the client
-        res.json(err);
+        // res.json(err);
       });
 
     });

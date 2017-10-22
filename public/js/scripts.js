@@ -32,7 +32,7 @@ $(document).ready(function() {
       method: "PUT",
       url: "/save/" + articleId,
     }).then(function(data) {
-      if (data.saved) {
+      if (data) {
         Materialize.toast('Article added to Saved Articles', 3000);
         $("[data-id='" + data._id + "']").remove();
         $grid.masonry();
@@ -52,7 +52,7 @@ $(document).ready(function() {
       method: "PUT",
       url: "/unsave/" + articleId,
     }).then(function(data) {
-      if (data.saved) {
+      if (data) {
         Materialize.toast('Article Removed from Saved Articles', 3000);
         $("[data-id='" + data._id + "']").remove(); 
         $grid.masonry();
