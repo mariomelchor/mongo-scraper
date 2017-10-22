@@ -20,7 +20,7 @@ app.use(express.static("public"));
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
 // var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoscraper";
-mongoose.connect(process.env.MONGODB_URI, {
+mongoose.connect("mongodb://heroku_vx16xnk2:346cf9dt78u3nsq49d4kkijafs@ds025439.mlab.com:25439/heroku_vx16xnk2", {
   useMongoClient: true
 });
 
