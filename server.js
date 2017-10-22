@@ -4,6 +4,8 @@ var exphbs     = require('express-handlebars');
 var express    = require("express");
 var mongoose   = require("mongoose");
 var request    = require("request");
+var PORT       = process.env.PORT || 3000;
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoscraper";
 
 // Require all models
 var db = require("./models");
@@ -19,8 +21,7 @@ app.use(express.static("public"));
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
-// var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoscraper";
-mongoose.connect("mongodb://heroku_vx16xnk2:346cf9dt78u3nsq49d4kkijafs@ds025439.mlab.com:25439/heroku_vx16xnk2", {
+mongoose.connect(MONGODB_URI, {
   useMongoClient: true
 });
 
@@ -119,6 +120,6 @@ app.get("/saved", function(req, res) {
 });
 
 // Set the app to listen on port 3000
-app.listen(3000, function() {
+app.listen(PORT, function() {
   console.log("App running on port 3000!");
 });
