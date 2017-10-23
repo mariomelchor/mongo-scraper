@@ -1,14 +1,7 @@
 $(document).ready(function() {
 
-  // Get all the articles
-  // $.getJSON("/all", function(data) {
-  //   $.each(data, function(index, value) {
-  //     var item = $('<div class="article-item">');
-  //     item.append(value.title);
-
-  //     $('#articles').append(item);
-  //   });
-  // });
+  // initialize modal
+  $('.modal').modal();  
 
   // initialize masonry
   var $grid = $('.article-grid').masonry({
@@ -58,6 +51,60 @@ $(document).ready(function() {
         $grid.masonry();
       }
     });
+  });
+
+  // Add Comment
+  $(document).on("click", ".add-comment", function(e){
+    e.preventDefault();
+
+    // Get the id of the data attribute from the parent div
+    var articleId = $(this).parents('.article-item').data("id");
+    var articleTitle = $(this).parents('.article-item').find(".card-title a").text();
+    console.log(articleTitle);
+    $('#save-comment').attr('data-article', articleId);
+    $('.comment-article-title').text(articleTitle);
+
+    // Remove comments
+    $("#comments").empty();
+
+    $.ajax({
+      method: "GET",
+      url: "/articles/" + articleId
+    })
+    .done(function(data) {
+      console.log(data);
+      if (data.comment) {
+        $("#comments").append("<h2>" + data.comment.comment + "</h2>");
+      }
+    });
+  
+  });
+
+  // Save a comment
+  $(document).on("click", "#save-comment", function(e){
+    e.preventDefault();
+
+    var articleId = $(this).data("article");
+    var comment = $("#comment").val();
+
+    console.log(comment);
+
+    // Ajax PUT request for the comments route
+    $.ajax({
+      method: "POST",
+      url: "/comments/" + articleId,
+      data        : {
+        "comment": comment
+      },
+      dataType    : 'json',
+    }).then(function(data) {
+      if (data) {
+        Materialize.toast('Comment has been Saved', 3000);
+        $("#comment").val('');
+        $('.modal').modal('close');
+      }
+    });
+  
   });
 
 });

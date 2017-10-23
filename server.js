@@ -18,6 +18,9 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 app.use(express.static("public"));
 
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
 // Set mongoose to leverage built in JavaScript ES6 Promises
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
@@ -117,6 +120,40 @@ app.get("/saved", function(req, res) {
   .catch(function(err) {
     res.json(err);
   });
+});
+
+// Route for saving/updating an Article's associated comments
+app.post("/comments/:id", function(req, res) {
+  // Create a new note and pass the req.body to the entry
+
+  db.Comment
+    .create(req.body)
+    .then(function(dbComment) {
+      return db.Article.findOneAndUpdate({ _id: req.params.id }, { comment: dbComment._id }, { new: true });
+    })
+    .then(function(dbArticle) {
+      // If we were able to successfully update an Article, send it back to the client
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
+// Route for grabbing a specific Article by id, populate it with it's comments
+app.get("/articles/:id", function(req, res) {
+  db.Article
+    .findOne({ _id: req.params.id })
+    .populate("comment")
+    .then(function(dbArticle) {
+      // If we were able to successfully find an Article with the given id, send it back to the client
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
 });
 
 // Set the app to listen on port 3000
