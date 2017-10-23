@@ -39,10 +39,11 @@
       <div class="col s12 m6">
         <div class="card">
           <div class="card-content">
-            <span class="card-title">Comments</span>
+            <span class="card-title"><i class="material-icons">comment</i> Comments</span>
             <div class="row">
-              <div id="comments" class="col s12">
-
+              <div class="col s12">
+                <ul id="comments" class="collection">
+                </ul>
               </div><!--/.comments -->
             </div><!-- /.row -->
           </div><!-- /.card-content -->
@@ -52,7 +53,8 @@
       <div class="col s12 m6">
         <div class="card">
           <div class="card-content">
-            <span class="comment-article-title card-title blue-text">Add A Comment</span>
+            <span class="comment-article-title card-title blue-text"></span>
+            <span class="card-title"><i class="material-icons">comment</i> Add a Comment</span>
             <div class="row">
               <form class="col s12">
                 <div class="row">
@@ -62,12 +64,10 @@
                     <label for="comment">Comment</label>
                   </div><!-- /.col -->
                 </div><!-- /.row -->
+                 <a id="save-comment" class="waves-effect waves-light btn orange" data-article=""><i class="material-icons tiny left">save</i> Save Comment</a>
               </form><!-- /.col -->
             </div><!-- /.row -->
           </div><!-- /.card-content -->
-          <div class="card-action">
-            <a id="save-comment" class="waves-effect waves-light btn orange" data-article=""><i class="material-icons tiny left">save</i> Save Comment</a>
-          </div><!-- /.card-action -->
         </div><!-- /.card -->
       </div><!-- /.col -->
 

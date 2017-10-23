@@ -74,7 +74,9 @@ $(document).ready(function() {
     .done(function(data) {
       console.log(data);
       if (data.comment) {
-        $("#comments").append("<h2>" + data.comment.comment + "</h2>");
+        $("#comments").append('<li class="collection-item"><div class="chip"><img src="images/anonymous.png" alt="Anonymous"> Anonymous</div>' + data.comment.comment + '</li>');
+      } else {
+        $("#comments").append('<li class="collection-item">No Comments</li>');
       }
     });
   
