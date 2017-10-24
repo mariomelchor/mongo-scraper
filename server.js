@@ -129,7 +129,7 @@ app.post("/comments/:id", function(req, res) {
   db.Comment
     .create(req.body)
     .then(function(dbComment) {
-      return db.Article.findOneAndUpdate({ _id: req.params.id }, { comment: dbComment._id }, { new: true });
+      return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { comment: dbComment._id } }, { new: true });
     })
     .then(function(dbArticle) {
       // If we were able to successfully update an Article, send it back to the client
@@ -154,6 +154,18 @@ app.get("/articles/:id", function(req, res) {
       // If an error occurred, send it to the client
       res.json(err);
     });
+});
+
+// Route for removing an comment
+app.put("/comments/remove/:id", function(req, res) {
+  db.Comment
+  .findOneAndRemove({ _id: req.params.id })
+  .then(function(dbComment) {
+    res.json(dbComment);
+  })
+  .catch(function(err) {
+    res.json(err);
+  });
 });
 
 // Set the app to listen on port 3000

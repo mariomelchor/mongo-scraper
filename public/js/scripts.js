@@ -75,7 +75,7 @@ $(document).ready(function() {
       console.log(data);
       if (data.comment.length > 0) {
         $.each(data.comment, function( index, value ) {
-          $("#comments").append('<li class="collection-item"><div class="chip"><img src="images/anonymous.png" alt="Anonymous"> Anonymous</div>' + value.comment + '</li>');
+          $("#comments").append('<li class="collection-item"><div class="chip"><img src="images/anonymous.png" alt="Anonymous"> Anonymous</div>' + value.comment + '<a href="#" id="remove-comment" class="right" data-comment="'+ value._id +'"><i class="material-icons orange-text">delete</i></a></li>');
         });
       } else {
         $("#comments").append('<li class="collection-item">No Comments</li>');
@@ -105,6 +105,26 @@ $(document).ready(function() {
       if (data) {
         Materialize.toast('Comment has been Saved', 3000);
         $("#comment").val('');
+        $('.modal').modal('close');
+      }
+    });
+  
+  });
+
+  // Remove comment
+  $(document).on("click", "#remove-comment", function(e){
+    e.preventDefault();
+
+    var commentId = $(this).data("comment");
+
+    // Ajax PUT request for the removing comments
+    $.ajax({
+      method: "PUT",
+      url: "/comments/remove/" + commentId,
+      dataType    : 'json',
+    }).then(function(data) {
+      if (data) {
+        Materialize.toast('Comment has been Removed', 3000);
         $('.modal').modal('close');
       }
     });
