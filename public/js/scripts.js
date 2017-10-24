@@ -73,8 +73,10 @@ $(document).ready(function() {
     })
     .done(function(data) {
       console.log(data);
-      if (data.comment) {
-        $("#comments").append('<li class="collection-item"><div class="chip"><img src="images/anonymous.png" alt="Anonymous"> Anonymous</div>' + data.comment.comment + '</li>');
+      if (data.comment.length > 0) {
+        $.each(data.comment, function( index, value ) {
+          $("#comments").append('<li class="collection-item"><div class="chip"><img src="images/anonymous.png" alt="Anonymous"> Anonymous</div>' + value.comment + '</li>');
+        });
       } else {
         $("#comments").append('<li class="collection-item">No Comments</li>');
       }
